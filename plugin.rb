@@ -63,7 +63,7 @@ after_initialize do
     skip_before_action :preload_json
 
     def subscribe
-      DiscoursePushNotifications::Pusher.subscribe(current_user, push_params)
+      DiscoursePushNotifications::Pusher.subscribe(current_user, push_params, params[:send_confirmation])
       render json: success_json
     end
 
