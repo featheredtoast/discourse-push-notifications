@@ -1,0 +1,9 @@
+{{#if showPushNotification}}
+  {{#unless bannerDismissed}}
+  {{#unless pushNotificationSubscribed}}
+    <div style="position: relative; top: 60px; padding: 20px 0px; background-color: #d1f0ff; text-align: center;">
+      This site needs permissions to <a {{action "subscribe"}}>enable push notifications!</a><a style="margin-left: 5px;" {{action "dismiss"}}><i class="fa fa-times" aria-hidden="true"></i></a>
+    </div>
+  {{/unless}}
+  {{/unless}}
+{{/if}}
