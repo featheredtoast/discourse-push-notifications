@@ -7,6 +7,10 @@ export function userSubscriptionKey(user) {
   return `subscribed-${user.get('id')}`;
 }
 
+export function userDismissedPrompt(user) {
+  return `dismissed-prompt-${user.get('id')}`;
+}
+
 function sendSubscriptionToServer(subscription, sendConfirmation) {
   ajax('/push_notifications/subscribe', {
     type: 'POST',

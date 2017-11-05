@@ -5,7 +5,8 @@ import {
   unsubscribe as unsubscribePushNotification,
   isPushNotificationsSupported,
   keyValueStore as pushNotificationKeyValueStore,
-  userSubscriptionKey as pushNotificationUserSubscriptionKey
+  userSubscriptionKey as pushNotificationUserSubscriptionKey,
+  userDismissedPrompt as pushNotificationUserDismissedPrompt,
 } from 'discourse/plugins/discourse-push-notifications/discourse/lib/push-notifications';
 
 import {
@@ -17,7 +18,18 @@ import KeyValueStore from 'discourse/lib/key-value-store';
 const desktopNotificationkeyValueStore = new KeyValueStore(context);
 
 export default Ember.Component.extend({
-  bannerDismissed: false,
+  @computed
+  bannerDismissed: {
+    set(value) {
+      const user = this.currentUser;
+      pushNotificationKeyValueStore.setItem(pushNotificationUserDismissedPrompt(user), value);
+      return pushNotificationKeyValueStore.getItem(pushNotificationUserDismissedPrompt(user));
+    },
+    get() {
+      return pushNotificationKeyValueStore.getItem(pushNotificationUserDismissedPrompt(Discourse.User.current()));
+    }
+  },
+
   @computed
   showPushNotificationPrompt() {
     return (this.siteSettings.push_notifications_enabled &&
