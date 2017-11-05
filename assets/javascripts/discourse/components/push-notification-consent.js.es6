@@ -19,7 +19,7 @@ const desktopNotificationkeyValueStore = new KeyValueStore(context);
 export default Ember.Component.extend({
   bannerDismissed: false,
   @computed
-  showPushNotification() {
+  showPushNotificationPrompt() {
     return (this.siteSettings.push_notifications_enabled &&
             this.siteSettings.push_notifications_prompt &&
               isPushNotificationsSupported() && this.currentUser
