@@ -21,6 +21,7 @@ export default Ember.Component.extend({
   @computed
   showPushNotification() {
     return (this.siteSettings.push_notifications_enabled &&
+            this.siteSettings.push_notifications_prompt &&
               isPushNotificationsSupported() && this.currentUser
             );
   },
