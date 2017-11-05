@@ -61,8 +61,9 @@ module DiscoursePushNotifications
       user.save_custom_fields(true)
       if send_confirmation == "true"
         message = {
-          title: "Push turned on",
-          body: "All set",
+          title: I18n.t("discourse_push_notifications.popup.confirm_title",
+                        site_title: SiteSetting.title),
+          body: I18n.t("discourse_push_notifications.popup.confirm_body"),
           icon: SiteSetting.logo_small_url || SiteSetting.logo_url,
           tag: "#{Discourse.current_hostname}-subscription"
         }

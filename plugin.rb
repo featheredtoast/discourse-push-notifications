@@ -103,3 +103,20 @@ after_initialize do
     end
   end
 end
+
+register_css <<CSS
+
+.push-notification-prompt {
+  position: relative;
+  top: 60px;
+  padding: 20px 0px;
+  background-color: #d1f0ff;
+  text-align: center;
+}
+
+.push-notification-prompt .dismiss {
+  float: right;
+  margin-right: 15px;
+}
+
+CSS
