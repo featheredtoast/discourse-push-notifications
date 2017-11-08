@@ -12,6 +12,10 @@ function showNotification(title, body, icon, tag, url) {
   return self.registration.showNotification(title, notificationOptions);
 }
 
+self.addEventListener('install', function(event) {
+  self.skipWaiting();
+});
+
 self.addEventListener('push', function(event) {
   var payload = event.data.json();
 
