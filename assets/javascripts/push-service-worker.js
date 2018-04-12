@@ -1,3 +1,10 @@
+const idleThresholdTime = 1000 * 10; // 10 seconds
+var lastAction = -1;
+
+function isIdle() {
+  return lastAction + idleThresholdTime < Date.now();
+}
+
 function showNotification(title, body, icon, badge, tag, baseUrl, url) {
   var notificationOptions = {
     body: body,
@@ -12,6 +19,10 @@ function showNotification(title, body, icon, badge, tag, baseUrl, url) {
 
 self.addEventListener('push', function(event) {
   var payload = event.data.json();
+  console.log("hide when active: " + payload.hide_when_active);
+  if(!isIdle() && payload.hide_when_active) {
+    return false;
+  }
 
   event.waitUntil(
     self.registration.getNotifications({ tag: payload.tag }).then(function(notifications) {
@@ -56,3 +67,8 @@ self.addEventListener('notificationclick', function(event) {
       })
   );
 });
+
+self.addEventListener('message', event => {
+  if('lastAction' in event.data){
+    lastAction = event.data.lastAction;
+  }});

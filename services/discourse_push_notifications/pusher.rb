@@ -20,7 +20,8 @@ module DiscoursePushNotifications
           icon: "#{Discourse.base_url}/plugins/discourse-push-notifications/images/#{Notification.types[payload[:notification_type]]}.png",
           tag: "#{Discourse.current_hostname}-#{payload[:topic_id]}",
           base_url: Discourse.base_url,
-          url: payload[:post_url]
+          url: payload[:post_url],
+          hide_when_active: true
         }
         send_notification user, subscription, message
       end

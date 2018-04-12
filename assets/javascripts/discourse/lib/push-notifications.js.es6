@@ -25,6 +25,22 @@ function userAgentVersionChecker(agent, version, mobileView) {
   return true;
 }
 
+function resetIdle() {
+  if('controller' in navigator.serviceWorker) {
+    navigator.serviceWorker.controller.postMessage({lastAction: Date.now()});
+  }
+}
+
+function setupActivityListeners(appEvents) {
+  window.addEventListener("focus", resetIdle);
+
+  if (document) {
+    document.addEventListener("scroll", resetIdle);
+  }
+
+  appEvents.on('page:changed', resetIdle);
+}
+
 export function isPushNotificationsSupported(mobileView) {
   if (!(('serviceWorker' in navigator) &&
      (ServiceWorkerRegistration &&
@@ -43,7 +59,7 @@ export function isPushNotificationsSupported(mobileView) {
   return true;
 }
 
-export function register(user, mobileView, router) {
+export function register(user, mobileView, router, appEvents) {
   if (!isPushNotificationsSupported(mobileView)) return;
   if (Notification.permission === 'denied' || !user) return;
 
@@ -63,6 +79,7 @@ export function register(user, mobileView, router) {
       router.handleURL(url);
     }
   });
+  setupActivityListeners(appEvents);
 }
 
 export function subscribe(callback, applicationServerKey) {
