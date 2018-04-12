@@ -46,7 +46,7 @@ export default Ember.Component.extend({
 
   @computed
   consentPrompt() {
-    return I18n.t('discourse_push_notifications.consent_prompt', {preferences: `/u/${this.currentUser.username}/preferences/notifications`});
+    return I18n.t('discourse_push_notifications.consent_prompt', {preferences: `${Discourse.BaseUri}/u/${this.currentUser.username}/preferences/notifications`});
   },
 
   @computed("pushNotificationSubscribed", "bannerDismissed")
