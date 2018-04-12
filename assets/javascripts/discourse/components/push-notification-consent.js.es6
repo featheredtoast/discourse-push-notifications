@@ -50,6 +50,7 @@ export default Ember.Component.extend({
             this.siteSettings.push_notifications_prompt &&
             isPushNotificationsSupported() &&
             this.currentUser &&
+            this.currentUser.reply_count + this.currentUser.topic_count > 0 &&
             Notification.permission !== "denied" &&
             Notification.permission !== "granted" &&
             !pushNotificationSubscribed &&
