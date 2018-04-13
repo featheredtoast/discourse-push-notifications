@@ -1,5 +1,10 @@
 import { ajax } from 'discourse/lib/ajax';
 import KeyValueStore from 'discourse/lib/key-value-store';
+import {
+  context as desktopNotificationContext,
+  unsubscribe as unsubscribeToDesktopNotifications,
+  hide as hideDesktopNotifications
+} from 'discourse/lib/desktop-notifications';
 
 export const keyValueStore = new KeyValueStore("discourse_push_notifications_");
 
@@ -41,6 +46,13 @@ function setupActivityListeners(appEvents) {
   appEvents.on('page:changed', resetIdle);
 }
 
+function disableDesktopNotifications(messageBus, currentUser) {
+  const desktopNotificationkeyValueStore = new KeyValueStore(desktopNotificationContext);
+  desktopNotificationkeyValueStore.setItem('notifications-disabled', 'disabled');
+  hideDesktopNotifications();
+  unsubscribeToDesktopNotifications(messageBus, currentUser);
+}
+
 export function isPushNotificationsSupported(mobileView) {
   if (!(('serviceWorker' in navigator) &&
      (ServiceWorkerRegistration &&
@@ -59,8 +71,12 @@ export function isPushNotificationsSupported(mobileView) {
   return true;
 }
 
-export function register(user, mobileView, router, appEvents) {
+export function register(user, mobileView, router, appEvents, messageBus) {
   if (!isPushNotificationsSupported(mobileView)) return;
+  //disable desktop notifications here
+  if(Discourse.SiteSettings.push_notifications_enabled) {
+    disableDesktopNotifications(messageBus, user);
+  }
   if (Notification.permission === 'denied' || !user) return;
 
   navigator.serviceWorker.ready.then(serviceWorkerRegistration => {

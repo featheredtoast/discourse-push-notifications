@@ -19,7 +19,6 @@ function showNotification(title, body, icon, badge, tag, baseUrl, url) {
 
 self.addEventListener('push', function(event) {
   var payload = event.data.json();
-  console.log("hide when active: " + payload.hide_when_active);
   if(!isIdle() && payload.hide_when_active) {
     return false;
   }

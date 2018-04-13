@@ -46,15 +46,6 @@ export default Ember.Component.extend({
     return !isDeniedPermission && !isSubscribed;
   },
 
-  @computed("isSubscribed")
-  instructions(isSubscribed) {
-    if (isSubscribed) {
-      return I18n.t("discourse_push_notifications.disable_note");
-    } else {
-      return I18n.t("discourse_push_notifications.enable_note");
-    }
-  },
-
   actions: {
     subscribe() {
       subscribePushNotification(() => {

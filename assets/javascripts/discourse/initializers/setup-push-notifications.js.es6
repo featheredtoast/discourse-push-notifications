@@ -13,10 +13,11 @@ export default {
       const router = container.lookup('router:main');
       const site = container.lookup('site:main');
       const appEvents = container.lookup('app-events:main');
+      const bus = container.lookup('message-bus:main');
 
       if (!Ember.testing && siteSettings.push_notifications_enabled) {
         const mobileView = site.mobileView;
-        registerPushNotifications(api.getCurrentUser(), mobileView, router, appEvents);
+        registerPushNotifications(api.getCurrentUser(), mobileView, router, appEvents, bus);
       }
     });
   }
